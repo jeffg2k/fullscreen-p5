@@ -245,6 +245,22 @@ public class SoftFullScreen extends FullScreenBase{
 		}
 	}
 
+        public boolean isAlwaysOnTop() {
+              return fsFrame.isAlwaysOnTop();
+        }
+
+        public void setAlwaysOnTop(final boolean ontop) {
+            if (ontop) {
+                new DelayedAction( 2 ) {
+                    public void action() {
+                        fsFrame.setAlwaysOnTop(ontop);
+                    }
+                };
+            } 
+            else {
+                fsFrame.setAlwaysOnTop(ontop);
+            }
+        }
 
 	/**
 	 * Setting resolution is not possible with the SoftFullScreen object. 
