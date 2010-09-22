@@ -127,7 +127,11 @@ public abstract class FullScreenBase {
 			
 			@Override
 			public void windowIconified( WindowEvent e ){
-				dad.noLoop();
+                                new DelayedAction( 2 ) {
+                                      public void action() {
+                                          dad.noLoop();
+                                      }
+                                };
 			}
 			
 			public void windowClosing( WindowEvent e ){
