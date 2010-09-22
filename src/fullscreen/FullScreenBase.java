@@ -122,18 +122,12 @@ public abstract class FullScreenBase {
 		// Window listener
 		f.addWindowListener( new WindowAdapter(){
 			public void windowDeiconified( WindowEvent w ){
-                                if( isFullScreen() ) {
-                                    dad.frame.setVisible( true );
-                                }
 				dad.loop(); 
 			}
 			
 			@Override
 			public void windowIconified( WindowEvent e ){
 				dad.noLoop();
-                                if( isFullScreen() ) {
-                                    dad.frame.setVisible( false );
-                                }
 			}
 			
 			public void windowClosing( WindowEvent e ){
