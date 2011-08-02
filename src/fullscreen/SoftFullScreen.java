@@ -184,6 +184,22 @@ public class SoftFullScreen extends FullScreenBase{
 		};
 	}
 	
+	public java.awt.Point getDadLocation() {
+		java.awt.Point p = new java.awt.Point(0,0);
+		boolean usesEntireScreen = fsDevice.getDefaultConfiguration().getBounds().getSize().equals( new Dimension( dad.width, dad.height ) );
+		int appleDriversSuck = PApplet.platform == PConstants.MACOSX && usesEntireScreen? 1:0;
+		
+		if (!dad.frame.isVisible()) {
+			p.x = fsFrame.getWidth() - dad.width ) / 2;
+			p.y = fsFrame.getHeight() - dad.height ) / 2 - appleDriversSuck;
+		} else {
+			p.x = frame.getLocation().x + frame.getWidth() - dad.width;
+			p.y = frame.getLocation().y + frame.getHeight() - dad.height;
+		}
+		return p;
+	}
+
+
 	@SuppressWarnings("deprecation")
 	private void setFullScreenImpl( boolean fullScreen ){
 		if( fullScreen == isFullScreen() ){
@@ -203,9 +219,9 @@ public class SoftFullScreen extends FullScreenBase{
 				fsFrame.setVisible( true ); 
 				fsFrame.setLocation( fsDevice.getDefaultConfiguration().getBounds().getLocation() );
 				
-				boolean usesEntireScreen = fsDevice.getDefaultConfiguration().getBounds().getSize().equals( new Dimension( dad.width, dad.height ) );
-				int appleDriversSuck = PApplet.platform == PConstants.MACOSX && usesEntireScreen? 1:0;  
-				dad.setLocation( ( fsFrame.getWidth() - dad.width ) / 2, ( fsFrame.getHeight() - dad.height ) / 2 - appleDriversSuck ); 
+				java.awt.Point p = getDadLocation();
+				dad.setLocation(p.x, p.y);
+
 				fsFrame.setExtendedState( Frame.MAXIMIZED_BOTH );		
 				
 				GLDrawableHelper.reAllocate( this ); 
