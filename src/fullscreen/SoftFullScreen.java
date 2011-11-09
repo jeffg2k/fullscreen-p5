@@ -95,14 +95,28 @@ public class SoftFullScreen extends FullScreenBase{
 		}
 		
 		fsDevice = devices[screenNr];
-		WindowListener listener = new WindowAdapter(){
-			public void windowDeiconified( WindowEvent w ){
-				if( isFullScreen() && PApplet.platform == PConstants.MACOSX ){
-					new JAppleMenuBar().setVisible( false );
+		final WindowListener listener = new WindowAdapter() {
+			public void windowDeiconified(final WindowEvent w) {
+				if (isFullScreen() && PApplet.platform == PConstants.MACOSX) {
+					new JAppleMenuBar().setVisible(false);
 				}
 
 			}
+
+			public void windowActivated(final WindowEvent w) {
+				if (isFullScreen()) {
+					informDad(w);
+				}
+			}
+
+			public void windowDeactivated(final WindowEvent w) {
+				if (isFullScreen()) {
+					informDad(w);
+				}
+			}
+
 		};
+
 
 		fsFrame = new Frame( fsDevice.getDefaultConfiguration() );
 		fsFrame.addWindowListener(listener);
@@ -117,6 +131,15 @@ public class SoftFullScreen extends FullScreenBase{
 		);
 		
 		registerFrame( fsFrame ); 
+	}
+	
+	private void informDad(final WindowEvent theEvent) {
+		final WindowListener[] dadlistens = dad.frame.getWindowListeners();
+		for (int i = 0; i < dadlistens.length; i++) {
+			final WindowListener advice = dadlistens[i];
+			advice.windowDeactivated(theEvent);
+			advice.windowActivated(theEvent);
+		}
 	}
 	
 	/**
