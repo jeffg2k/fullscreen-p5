@@ -96,25 +96,51 @@ public class SoftFullScreen extends FullScreenBase{
 		
 		fsDevice = devices[screenNr];
 		final WindowListener listener = new WindowAdapter() {
-			public void windowDeiconified(final WindowEvent w) {
-				if (isFullScreen() && PApplet.platform == PConstants.MACOSX) {
-					new JAppleMenuBar().setVisible(false);
+			public void windowDeiconified(WindowEvent w) {
+				if (isFullScreen()) {
+					informDad(w, WindowEvent.WINDOW_DEICONIFIED);
+					if (PApplet.platform == PConstants.MACOSX) {
+						new JAppleMenuBar().setVisible(false);
+					}
 				}
 
 			}
 
+			public void windowClosing(final WindowEvent w) {
+				if (isFullScreen()) {
+					informDad(w, WindowEvent.WINDOW_CLOSING);
+				}
+			}
+
+			public void windowClosed(final WindowEvent w) {
+				if (isFullScreen()) {
+					informDad(w, WindowEvent.WINDOW_CLOSED);
+				}
+			}
+
+			public void windowOpened(final WindowEvent w) {
+				if (isFullScreen()) {
+					informDad(w, WindowEvent.WINDOW_OPENED);
+				}
+			}
+
+			public void windowIconified(final WindowEvent w) {
+				if (isFullScreen()) {
+					informDad(w, WindowEvent.WINDOW_ICONIFIED);
+				}
+			}
+
 			public void windowActivated(final WindowEvent w) {
 				if (isFullScreen()) {
-					informDad(w);
+					informDad(w, WindowEvent.WINDOW_ACTIVATED);
 				}
 			}
 
 			public void windowDeactivated(final WindowEvent w) {
 				if (isFullScreen()) {
-					informDad(w);
+					informDad(w, WindowEvent.WINDOW_DEACTIVATED);
 				}
 			}
-
 		};
 
 
@@ -133,12 +159,33 @@ public class SoftFullScreen extends FullScreenBase{
 		registerFrame( fsFrame ); 
 	}
 	
-	private void informDad(final WindowEvent theEvent) {
+	private void informDad(final WindowEvent theEvent, final int theAction) {
 		final WindowListener[] dadlistens = dad.frame.getWindowListeners();
 		for (int i = 0; i < dadlistens.length; i++) {
 			final WindowListener advice = dadlistens[i];
-			advice.windowDeactivated(theEvent);
-			advice.windowActivated(theEvent);
+			switch (theAction) {
+			case WindowEvent.WINDOW_DEACTIVATED:
+				advice.windowDeactivated(theEvent);
+				break;
+			case WindowEvent.WINDOW_ACTIVATED:
+				advice.windowActivated(theEvent);
+				break;
+			case WindowEvent.WINDOW_ICONIFIED:
+				advice.windowIconified(theEvent);
+				break;
+			case WindowEvent.WINDOW_DEICONIFIED:
+				advice.windowDeiconified(theEvent);
+				break;
+			case WindowEvent.WINDOW_CLOSED:
+				advice.windowClosed(theEvent);
+				break;
+			case WindowEvent.WINDOW_CLOSING:
+				advice.windowClosing(theEvent);
+				break;
+			case WindowEvent.WINDOW_OPENED:
+				advice.windowOpened(theEvent);
+				break;
+			}
 		}
 	}
 	
