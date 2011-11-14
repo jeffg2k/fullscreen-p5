@@ -96,7 +96,8 @@ public class SoftFullScreen extends FullScreenBase{
 		
 		fsDevice = devices[screenNr];
 		final WindowListener listener = new WindowAdapter() {
-			public void windowDeiconified(WindowEvent w) {
+			@Override
+			public void windowDeiconified(final WindowEvent w) {
 				if (isFullScreen()) {
 					informDad(w, WindowEvent.WINDOW_DEICONIFIED);
 					if (PApplet.platform == PConstants.MACOSX) {
@@ -105,37 +106,43 @@ public class SoftFullScreen extends FullScreenBase{
 				}
 
 			}
-
+			
+			@Override
 			public void windowClosing(final WindowEvent w) {
 				if (isFullScreen()) {
 					informDad(w, WindowEvent.WINDOW_CLOSING);
 				}
 			}
 
+			@Override
 			public void windowClosed(final WindowEvent w) {
 				if (isFullScreen()) {
 					informDad(w, WindowEvent.WINDOW_CLOSED);
 				}
 			}
 
+			@Override
 			public void windowOpened(final WindowEvent w) {
 				if (isFullScreen()) {
 					informDad(w, WindowEvent.WINDOW_OPENED);
 				}
 			}
 
+			@Override
 			public void windowIconified(final WindowEvent w) {
 				if (isFullScreen()) {
 					informDad(w, WindowEvent.WINDOW_ICONIFIED);
 				}
 			}
 
+			@Override
 			public void windowActivated(final WindowEvent w) {
 				if (isFullScreen()) {
 					informDad(w, WindowEvent.WINDOW_ACTIVATED);
 				}
 			}
 
+			@Override
 			public void windowDeactivated(final WindowEvent w) {
 				if (isFullScreen()) {
 					informDad(w, WindowEvent.WINDOW_DEACTIVATED);
