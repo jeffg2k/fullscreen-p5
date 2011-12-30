@@ -178,10 +178,10 @@ public class SoftFullScreen extends FullScreenBase{
 				advice.windowActivated(theEvent);
 				break;
 			case WindowEvent.WINDOW_ICONIFIED:
-				advice.windowIconified(theEvent);
+				//advice.windowIconified(theEvent);
 				break;
 			case WindowEvent.WINDOW_DEICONIFIED:
-				advice.windowDeiconified(theEvent);
+				//advice.windowDeiconified(theEvent);
 				break;
 			case WindowEvent.WINDOW_CLOSED:
 				advice.windowClosed(theEvent);
