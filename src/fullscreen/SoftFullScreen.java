@@ -261,17 +261,26 @@ public class SoftFullScreen extends FullScreenBase{
 		};
 	}
 	
+	public Frame getActiveFrame() {
+		if (isFullScreen()) {
+			return fsFrame;
+		} else {
+			return dad.frame;
+		}
+	}
+	
 	public java.awt.Point getDadLocation() {
 		java.awt.Point p = new java.awt.Point(0,0);
 		boolean usesEntireScreen = fsDevice.getDefaultConfiguration().getBounds().getSize().equals( new Dimension( dad.width, dad.height ) );
 		int appleDriversSuck = PApplet.platform == PConstants.MACOSX && usesEntireScreen? 1:0;
 		
 		if (!dad.frame.isVisible()) {
-			p.x = fsFrame.getWidth() - dad.width ) / 2;
-			p.y = fsFrame.getHeight() - dad.height ) / 2 - appleDriversSuck;
+			p.x = (fsFrame.getWidth() - dad.width) / 2;
+			p.y = (fsFrame.getHeight() - dad.height) / 2 - appleDriversSuck;
 		} else {
-			p.x = frame.getLocation().x + frame.getWidth() - dad.width;
-			p.y = frame.getLocation().y + frame.getHeight() - dad.height;
+			Insets insets = dad.frame.getInsets();
+			p.x = dad.frame.getLocation().x + insets.left;
+			p.y = dad.frame.getLocation().y + insets.top;
 		}
 		return p;
 	}
